@@ -207,11 +207,12 @@
           <div v-if="!showFirstDiv" class="userInput">
             <p>
               Please indicate whether the sentence was OK or whether you think
-              it contained an error. Remember, please disregard capitalization.
+              it contained an error. You can also indicate that you're not sure.
+              Remember, please disregard capitalization.
             </p>
-            <ForcedChoiceInput
+            <MultipleChoiceInput
               :response.sync="$magpie.measurements.response"
-              :options="['Sentence was OK', 'I noticed an error']"
+              :options="['I noticed an error', 'Not sure', 'Sentence was OK']"
             />
           </div>
 
