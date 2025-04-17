@@ -18,12 +18,10 @@
           <b> Information About this Study </b>
         </div>
         <p>
-          Your participation in this research study is voluntary. Please read
-          the text below carefully.
-          <br /><br />
+          <br />
 
-          <b>What is investigated and how?</b> You are being asked to take part
-          in a research study being done at the Massachusetts Institute of
+          <b>What is being investigated?</b> You are being asked to take part in
+          a research study being done at the Massachusetts Institute of
           Technology. This study will help us learn about how people read. It
           will take you around 20 minutes to complete. <br /><br />
 
@@ -36,21 +34,23 @@
 
           <b>What are my rights during participation?</b> Your participation in
           this study is voluntary. If you choose to participate, you may change
-          your mind and leave the study at any time by closing the web page
-          without specifying reasons and without any disadvantages. <br /><br />
+          your mind and leave the study at any time by closing the web page. You
+          do not have to provide reasons. <br /><br />
 
           <b>What risks and benefits can I expect?</b> There are no foreseeable
           risks for participating in this study. <br /><br />
 
           <b>Will I be compensated for participating?</b> If you complete the
-          experiment, you will be compensated for your time following the amount
-          specified on Prolific. <br /><br />
+          experiment, you will be compensated for your time according to the
+          amount specified on Prolific. <br /><br />
 
           <b>What data is collected from me and how is it used?</b> During this
-          study, we will track the position of your mouse on screen. The data
-          from this study may be presented at scientific conferences and
-          published in scientific journals, as well as in online repositories.
-          All data will remain anonymous. <br /><br />
+          study, we will track the position of your mouse on screen. At the end
+          of the study you will be asked to complete a brief survey. No
+          personally identifying information will be collected. The data from
+          this study may be presented at scientific conferences and published in
+          scientific journals, as well as in online repositories. All data will
+          remain anonymous. <br /><br />
 
           <b> Who reviewed this study? </b> This study's protocol has been
           approved by the MIT Committee on the Use of Humans as Experimental
@@ -68,13 +68,11 @@
         <br />
         I, the participant, confirm by clicking the button below: <br />
         <div style="padding-left: 30px">
-          • I have read and understood the study information. My questions have
-          been answered completely and to my satisfaction.
+          • I have read and understood the study information above.
         </div>
         <div style="padding-left: 30px">
           • I comply with the inclusion and exclusion criteria for participation
-          described above. I am aware of the requirements and restrictions to be
-          observed during the study.
+          described above.
         </div>
         <div style="padding-left: 30px">
           • I have had enough time to decide about my participation.
@@ -305,7 +303,12 @@
       </button>
     </Screen>
 
-    <SubmitResultsScreen />
+    <!-- <SubmitResultsScreen /> -->
+
+    <Screen :title="'Study Complete'">
+      <p class="selectable-text" style="font-size: 24px">Completion Code:</p>
+      <p class="selectable-text" style="font-size: 24px">C101RMLG</p>
+    </Screen>
   </Experiment>
 </template>
 
@@ -345,7 +348,7 @@ export default {
       implausibleConditions.concat(plausibleConditions)
     );
 
-    const updatedItems = list1.map((trial, idx) => {
+    const updatedItems = _.shuffle(list1).map((trial, idx) => {
       var col = shuffledConditions[idx];
       return {
         ...trial,
@@ -365,20 +368,24 @@ export default {
       };
     });
 
-    console.log(updatedFillers);
+    // get five clean fillers to ensure we show first -- removes them from the original list
+    const updatedFillersCleanPreview = updatedFillers.splice(6, 5);
 
-    const updatedShuffledItems = _.shuffle(updatedItems.concat(updatedFillers));
-    // const updatedShuffledItems = _.shuffle(updatedItems);
+    // console.log(updatedFillers);
+
+    const updatedShuffledItems = updatedFillersCleanPreview.concat(
+      _.shuffle(updatedItems.concat(updatedFillers))
+    );
+    // const updatedShuffledItems = updatedFillersCleanPreview.concat(
+    //   _.sampleSize(_.shuffle(updatedItems.concat(updatedFillers)), 5)
+    // );
 
     // debugging
     // console.log(updatedShuffledItems);
-    // const updatedTrials = _.sampleSize(updatedShuffledItems, 3);
 
     return {
       isCursorMoving: false,
-      // practiceTrials: practice,
       trials: updatedShuffledItems,
-      // trials: updatedTrials,
       currentIndex: null,
       showFirstDiv: true,
       mousePosition: {
@@ -577,5 +584,11 @@ button {
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+.selectable-text {
+  -webkit-user-select: text; /* Chrome/Safari */
+  -moz-user-select: text; /* Firefox */
+  -ms-user-select: text; /* IE/Edge */
+  user-select: text; /* standard */
 }
 </style>
