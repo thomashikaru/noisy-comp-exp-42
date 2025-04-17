@@ -295,7 +295,7 @@
           const subject_id = data[0].SubjectId;
           const last_trial = data[data.length - 1];
           const updated_last_trial = [{ ...last_trial, SubjectId: subject_id }];
-          // $magpie.submitResults($magpie.submissionUrl, updated_last_trial);
+          $magpie.submitResults($magpie.submissionUrl, updated_last_trial);
           $magpie.nextScreen();
         "
       >
